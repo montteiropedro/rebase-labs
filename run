@@ -1,10 +1,23 @@
 #!/bin/bash
 
+docker network create rebase-labs-network
+
+docker run \
+  -d \
+  --rm \
+  --name postgresdb \
+  --network rebase-labs-network \
+  -e POSTGRES_USER=admin \
+  -e POSTGRES_PASSWORD=admin \
+  -v $(pwd)/postgres-data-rebase-labs:/var/lib/postgresql/data \
+  postgres
+
 docker run \
   --rm \
   --name rebase-labs \
+  --network rebase-labs-network \
   -w /app \
   -v $(pwd):/app \
   -p 3000:3000 \
   ruby \
-  bash -c "gem install rack sinatra puma && ruby server.rb"
+  bash -c "gem install rack sinatra puma pg && ruby server.rb"
