@@ -9,7 +9,7 @@ docker run \
   --network rebase-labs-network \
   -e POSTGRES_USER=admin \
   -e POSTGRES_PASSWORD=admin \
-  -v $(pwd)/postgres-data-rebase-labs:/var/lib/postgresql/data \
+  -v $(pwd)/database:/var/lib/postgresql/data \
   postgres
 
 docker run \
@@ -18,6 +18,7 @@ docker run \
   --network rebase-labs-network \
   -w /app \
   -v $(pwd):/app \
+  -v $(pwd)/gems:/usr/local/bundle \
   -p 3000:3000 \
   ruby \
   bash -c "gem install rack sinatra puma pg && ruby server.rb"
