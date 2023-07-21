@@ -1,15 +1,25 @@
 require 'sinatra'
 require 'rack/handler/puma'
-require './helpers.rb'
+require './helpers/exams.rb'
 
 get '/tests' do
   content_type :json
-  Helpers::DB::Feature1.unformatted_json_data
+  Exams::Feature1.all
 end
 
-get '/exames' do
+get '/exams/json' do
   content_type :json
-  Helpers::DB::Feature2.formatted_json_data
+  Exams::Feature2.all
+end
+
+get '/exams' do
+  content_type :html
+  File.open('index.html')
+end
+
+get '/exams/:token' do
+  content_type :json
+  Exams::Feature2.find(params[:token])
 end
 
 Rack::Handler::Puma.run(

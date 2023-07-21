@@ -1,5 +1,5 @@
 require 'csv'
-require './helpers.rb'
+require_relative '../helpers/db_helper.rb'
 
 rows = CSV.read("./data.csv", col_sep: ';')
 columns = rows.shift
@@ -11,5 +11,5 @@ data = rows.map do |row|
   end
 end
 
-Helpers::DB.create_tables
-Helpers::DB.insert_csv_data(data)
+DB.create_tables
+DB.insert_csv_data(data)
