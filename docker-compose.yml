@@ -1,0 +1,24 @@
+version: '3.9'
+services:
+  web:
+    image: ruby
+    container_name: web
+    working_dir: /app
+    volumes:
+      - .:/app
+      - ./gems:/usr/local/bundle
+    command: bash -c "bundle && ruby server.rb"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+  db:
+    image: postgres
+    container_name: postgresdb
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+    volumes:
+      - ./database:/var/lib/postgresql/data

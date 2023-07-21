@@ -8,7 +8,7 @@ module Helpers
     PASS = 'admin'
   
     def self.create_tables
-      db = create_db_connection
+      db = PG.connect(host: HOST, user: USER, password: PASS)
   
       db.exec("CREATE TABLE IF NOT EXISTS patients (id SERIAL,
                                                     cpf VARCHAR(11) NOT NULL UNIQUE PRIMARY KEY,
