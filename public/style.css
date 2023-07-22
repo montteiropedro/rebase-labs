@@ -1,15 +1,21 @@
 :root {
   --bg-primary: #333333;
   --bg-secondary: #000000;
-  --text-primary: #ffffff;
-  --text-secondary: #828282;
+
+  --color-primary: #ffffff;
+  --color-secondary: #828282;
+  --color-tertiary: #FF63AF;
+
+  --result-good: #198754;
+  --result-neutral: #F99245;
+  --result-danger: #DC3545;
 }
 
 html,
 body {
   background-color: var(--bg-primary);
   scroll-behavior: smooth;
-  color: var(--text-primary);
+  color: var(--color-primary);
 
   font-family: 'Inter', sans-serif;
 }
@@ -20,7 +26,10 @@ body {
 
 .navbar-brand {
   font-family: 'Lexend Exa', sans-serif;
+  font-size: 22px;
 }
+
+.navbar-brand > i { color: var(--color-tertiary); }
 
 .title {
   margin-bottom: 3rem;
@@ -35,11 +44,12 @@ body {
 }
 
 .exam-card {
-  padding: 2rem;
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
   background-color: var(--bg-secondary);
   border-radius: .5rem;
-
-  transition: all ease-in-out .3s;
 }
 
 .exam-card--header {
@@ -54,19 +64,73 @@ body {
   gap: .5rem;
 }
 
+.exam-card--header > div:first-of-type { width: 126px; }
 .exam-card--header > div:last-of-type { width: 100%; }
 
-
-.exam-card--header .exam-card--title {
-  color: var(--text-primary);
-  font-weight: bold;
-  font-size: 24px;
+.exam-card--header i {
+  cursor: pointer;
+  transition: all .2s ease-in-out;
 }
 
-.exam-card--header .exam-card--text {
-  color: var(--text-secondary);
+.exam-card--header i.active {
+  transform: rotate(180deg);
+}
+
+.exam-card--header .exam-card--title {
+  color: var(--color-primary);
   font-weight: bold;
   font-size: 20px;
 }
 
+.exam-card--header .exam-card--text {
+  color: var(--color-secondary);
+  font-weight: bold;
+  font-size: 18px;
+}
 
+.exam-card--body {
+  margin-left: 3rem;
+  display: none;
+
+  transition: all .5s ease-in-out;
+}
+
+.exam-card--body.visible {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.test-result-good { color: var(--result-good); }
+.test-result-neutral { color: var(--result-neutral); }
+.test-result-danger { color: var(--result-danger); }
+
+table {
+  width: 100%;
+  table-layout: fixed;
+  border-radius: .5rem;
+}
+
+table, th, td {
+  border: 1px solid #414141;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+th, td {
+  padding: 1rem;
+  height: 56px;
+  font-weight: 600;
+}
+
+thead > tr { background-color: rgba(255, 255, 255, 0.15); }
+thead > tr > th:first-of-type { border-radius: .5rem 0 0 0; }
+thead > tr > th:last-of-type { border-radius: 0 .5rem 0 0; }
+
+tbody > tr > td {
+  color: var(--color-secondary);
+}
+
+tbody > tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.04); }
+tbody > tr:last-of-type > td:first-of-type { border-radius: 0 0 0 .5rem; }
+tbody > tr:last-of-type > td:last-of-type { border-radius: 0 0 .5rem 0; }
