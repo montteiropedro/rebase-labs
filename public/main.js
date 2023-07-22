@@ -1,5 +1,16 @@
 const fragment = new DocumentFragment();
-const url = 'http://localhost:3000/exams/json';
+
+document.querySelector('.search-form').onsubmit = async (e) => {
+  e.preventDefault();
+  const searchQuery = e.target.token.value;
+  document.querySelector('section#exams').innerHTML = '';
+
+  if (searchQuery !== '') {
+    fetchData(`http://localhost:3000/exams/${searchQuery}`);
+  } else {
+    fetchData();
+  }
+};
 
 function setResultColor(result, minLimit, maxLimit) {
   if (Number(result) >= Number(minLimit) && Number(result) <= Number(maxLimit)) return 'test-result-neutral';
@@ -7,13 +18,14 @@ function setResultColor(result, minLimit, maxLimit) {
   if (Number(result) > Number(maxLimit)) return 'test-result-danger';
 }
 
-fetch(url)
-  .then((res) => res.json())
-  .then((data) => {
-    data.forEach((exam) => {
-      const examDiv = document.createElement('div');
+async function fetchData(url = 'http://localhost:3000/exams/json') {
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => {
+      data.forEach((exam) => {
+        const examDiv = document.createElement('div');
 
-      examDiv.innerHTML = `
+        examDiv.innerHTML = `
         <div class="exam-card--header">
           <i class="fa-solid fa-chevron-down exam-card--btn"></i>
 
@@ -30,11 +42,11 @@ fetch(url)
           <span class="exam-card--text">${new Date(exam.result_date).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</span>
         </div>
 
-        <div class="exam-card--body hidden"></div>
+        <div class="exam-card--body"></div>
       `;
 
-      const patientTable = document.createElement('table');
-      patientTable.innerHTML = `
+        const patientTable = document.createElement('table');
+        patientTable.innerHTML = `
         <thead>
           <tr>
             <th>Paciente</th>
@@ -51,8 +63,8 @@ fetch(url)
         </tbody>
       `;
 
-      const doctorTable = document.createElement('table');
-      doctorTable.innerHTML = `
+        const doctorTable = document.createElement('table');
+        doctorTable.innerHTML = `
         <thead>
           <tr>
             <th>Médico(a)</th>
@@ -69,8 +81,8 @@ fetch(url)
         </tbody>
       `;
 
-      const testsTable = document.createElement('table');
-      testsTable.innerHTML = `
+        const testsTable = document.createElement('table');
+        testsTable.innerHTML = `
         <thead>
           <tr>
             <th>Tipo</th>
@@ -81,34 +93,38 @@ fetch(url)
         <tbody></tbody>
       `;
 
-      exam.tests.forEach((test) => {
-        const limits = test.limits.match(/\d+/g);
-        const tr = document.createElement('tr');
+        exam.tests.forEach((test) => {
+          const limits = test.limits.match(/\d+/g);
+          const tr = document.createElement('tr');
 
-        tr.innerHTML = `
+          tr.innerHTML = `
           <td>${test.type}</td>
           <td>${test.limits}</td>
           <td class="${setResultColor(test.result, limits[0], limits[1])}">${test.result}</td>
         `;
 
-        testsTable.children[1].appendChild(tr);
+          testsTable.children[1].appendChild(tr);
+        });
+
+        fragment.appendChild(examDiv).classList.add('exam-card');
+        examDiv.children[1].appendChild(patientTable);
+        examDiv.children[1].appendChild(doctorTable);
+        examDiv.children[1].appendChild(testsTable);
       });
 
-      fragment.appendChild(examDiv).classList.add('exam-card');
-      examDiv.children[1].appendChild(patientTable);
-      examDiv.children[1].appendChild(doctorTable);
-      examDiv.children[1].appendChild(testsTable);
+      document.querySelector('#results_count').textContent = `${data.length} Exames`;
     })
-  })
-  .then(() => {
-    document.querySelector('section#exams').appendChild(fragment)
+    .then(() => {
+      document.querySelector('section#exams').appendChild(fragment);
 
-    document.querySelectorAll('div.exam-card--header').forEach(cardHeader => {
-
-      cardHeader.addEventListener('click', () => {
-        cardHeader.children[0].classList.toggle('active');
-        cardHeader.parentElement.children[1].classList.toggle('visible');
+      document.querySelectorAll('div.exam-card--header').forEach(cardHeader => {
+        cardHeader.addEventListener('click', () => {
+          cardHeader.children[0].classList.toggle('active');
+          cardHeader.parentElement.children[1].classList.toggle('visible');
+        });
       });
-    });
-  })
-  .catch((error) => console.log(error));
+    })
+    .catch((error) => console.log(error));
+}
+
+window.onload = () => fetchData();

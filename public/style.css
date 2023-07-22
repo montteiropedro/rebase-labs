@@ -20,6 +20,8 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
+form { margin: 0; }
+
 .navbar {
   min-height: 86px;
 }
@@ -31,10 +33,40 @@ body {
 
 .navbar-brand > i { color: var(--color-tertiary); }
 
-.title {
+main > .header {
   margin-bottom: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+main > .header > .title {
+  margin: 0;
   font-weight: bold;
   font-size: 32px;
+}
+
+main > .header > .search-form {
+  position: relative;
+  margin: 0;
+}
+
+main > .header > .search-form > input {
+  padding: 0 3rem 0 1rem;
+  height: 40px;
+  color: var(--color-primary);
+  background-color: var(--bg-secondary);
+  border: none;
+  border-radius: .5rem;
+}
+
+main > .header > .search-form > .search-btn {
+  position: absolute;
+  top: 0; right: 0;
+  padding-inline: 1rem; 
+  height: 40px;
+  background-color: transparent;
+  border: none;
 }
 
 #exams {
@@ -91,7 +123,6 @@ body {
 }
 
 .exam-card--body {
-  margin-left: 3rem;
   display: none;
   transition: all .5s ease-in-out;
 }

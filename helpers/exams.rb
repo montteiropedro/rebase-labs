@@ -55,10 +55,10 @@ module Exams
         JOIN doctors AS d
           ON e.doctor_crm = d.crm
         WHERE
-          e.token = $1
-      ", [token])
+          e.token LIKE $1;
+      ", ["%#{token}%"])
   
-      Formatter::Feature2.data(db, exam_data[0]).to_json
+      exam_data.map { |d| Formatter::Feature2.data(db, d) }.to_json
     end
   end
 end

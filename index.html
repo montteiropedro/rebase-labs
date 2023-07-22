@@ -46,7 +46,15 @@
   </header>
 
   <main class="container my-5">
-    <h1 class="title">Exames</h1>
+    <div class="header">
+      <h1 class="title">Exames</h1>
+
+      <form method="GET" class="search-form">
+        <span id="results_count">0 Exames</span>
+        <input name="token" type="text" placeholder="Pesquisar exame pelo token">
+        <button class="search-btn"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></button>
+      </form>
+    </div>
     <section id="exams"></section>
   </main>
 
