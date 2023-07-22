@@ -56,6 +56,8 @@ body {
   display: flex;
   gap: 2rem;
   align-items: center;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
 }
 
 .exam-card--header > div {
@@ -67,14 +69,14 @@ body {
 .exam-card--header > div:first-of-type { width: 126px; }
 .exam-card--header > div:last-of-type { width: 100%; }
 
-.exam-card--header i {
-  cursor: pointer;
+.exam-card--header > i {
+  color: var(--color-secondary);
   transition: all .2s ease-in-out;
 }
 
-.exam-card--header i.active {
-  transform: rotate(180deg);
-}
+.exam-card--header:hover > i { color: var(--color-primary); }
+
+.exam-card--header i.active { transform: rotate(180deg); }
 
 .exam-card--header .exam-card--title {
   color: var(--color-primary);
@@ -91,7 +93,6 @@ body {
 .exam-card--body {
   margin-left: 3rem;
   display: none;
-
   transition: all .5s ease-in-out;
 }
 

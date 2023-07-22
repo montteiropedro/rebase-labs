@@ -15,7 +15,7 @@ fetch(url)
 
       examDiv.innerHTML = `
         <div class="exam-card--header">
-          <i id="exam-card--btn" class="fa-solid fa-chevron-down"></i>
+          <i class="fa-solid fa-chevron-down exam-card--btn"></i>
 
           <div>
             <span class="exam-card--title">Exame</span>
@@ -103,10 +103,11 @@ fetch(url)
   .then(() => {
     document.querySelector('section#exams').appendChild(fragment)
 
-    document.querySelectorAll('i#exam-card--btn').forEach(button => {
-      button.addEventListener('click', () => {
-        button.classList.toggle('active');
-        button.parentElement.nextElementSibling.classList.toggle('visible');
+    document.querySelectorAll('div.exam-card--header').forEach(cardHeader => {
+
+      cardHeader.addEventListener('click', () => {
+        cardHeader.children[0].classList.toggle('active');
+        cardHeader.parentElement.children[1].classList.toggle('visible');
       });
     });
   })
