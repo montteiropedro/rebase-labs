@@ -14,6 +14,11 @@
   --btn-height: 40px;
 }
 
+.navbar .navbar-nav > .nav-item.dropdown > .dropdown-menu a:focus {
+  color: var(--color-primary);
+  background-color: var(--color-tertiary);
+}
+
 *:focus-visible {
   outline: none;
   box-shadow: 0 0 4px var(--color-tertiary);
