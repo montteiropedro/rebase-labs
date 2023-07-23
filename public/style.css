@@ -5,10 +5,18 @@
   --color-primary: #ffffff;
   --color-secondary: #828282;
   --color-tertiary: #FF63AF;
+  --color-tertiary-hover: #fd4fa3;
 
   --result-good: #198754;
   --result-neutral: #F99245;
   --result-danger: #DC3545;
+
+  --btn-height: 40px;
+}
+
+*:focus-visible {
+  outline: none;
+  box-shadow: 0 0 4px var(--color-tertiary);
 }
 
 html,
@@ -31,7 +39,62 @@ form { margin: 0; }
   font-size: 22px;
 }
 
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1);}
+}
+
 .navbar-brand > i { color: var(--color-tertiary); }
+.navbar-brand:hover > i { animation: pulse 1s infinite; }
+
+.navbar #csv-import-form {
+  width: min(100%, 312px);
+  height: var(--btn-height);
+  display: flex;
+  font-size: small;
+  color: #000000;
+}
+
+.navbar #csv-import-form input { display: none; }
+
+.navbar #csv-import-form label {
+  cursor: pointer;
+  padding-inline: 1rem;
+  width: 55%;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  color: var(--color-secondary);
+  border: 2px solid var(--color-tertiary);
+  border-radius: .5rem 0 0 .5rem;
+  transition: all .2s ease-in-out;
+  white-space: nowrap;
+}
+
+.navbar #csv-import-form label > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.navbar #csv-import-form label:hover {
+  background-color: rgba(51, 51, 51, .1);
+}
+
+.navbar #csv-import-form button[type="submit"] {
+  padding-inline: 1rem;
+  width: 45%;
+  border-radius: 0 .5rem .5rem 0;
+  background-color: var(--color-tertiary);
+  font-weight: 500;
+  color: #000000;
+  border: none;
+  transition: all .2s ease-in-out;
+}
+
+.navbar #csv-import-form button[type="submit"]:hover {
+  background-color: var(--color-tertiary-hover);
+}
 
 main > .header {
   margin-bottom: 3rem;
@@ -40,33 +103,50 @@ main > .header {
   justify-content: space-between;
 }
 
-main > .header > .title {
+main > .header > div > .title {
   margin: 0;
   font-weight: bold;
   font-size: 32px;
 }
 
+main > .header > div > #results-count {
+  font-weight: 600;
+  color: var(--color-tertiary);
+}
+
 main > .header > .search-form {
   position: relative;
   margin: 0;
+  width: min(100%, 312px);
 }
 
 main > .header > .search-form > input {
   padding: 0 3rem 0 1rem;
-  height: 40px;
+  width: min(100%, 312px);
+  height: var(--btn-height);
   color: var(--color-primary);
   background-color: var(--bg-secondary);
   border: none;
   border-radius: .5rem;
 }
 
-main > .header > .search-form > .search-btn {
+main > .header > .search-form > button[type="submit"] {
   position: absolute;
   top: 0; right: 0;
   padding-inline: 1rem; 
-  height: 40px;
+  height: var(--btn-height);
   background-color: transparent;
   border: none;
+  border-radius: .5rem;
+}
+
+main > .header > .search-form > button[type="submit"] > i {
+  color: var(--color-secondary);
+  transition: all .2s ease-in-out;
+}
+
+main > .header > .search-form > button[type="submit"]:hover > i {
+  color: var(--color-primary);
 }
 
 #exams {

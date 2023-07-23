@@ -35,24 +35,34 @@
                 Dados em JSON
               </a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Dados Feature 1</a></li>
+                <li><a class="dropdown-item" href="/tests">Dados Feature 1</a></li>
                 <li><a class="dropdown-item" href="/exams/json">Dados Feature 2</a></li>
               </ul>
             </li>
           </ul>
+
+          <form method="post" enctype="multipart/form-data" id="csv-import-form" class="ms-lg-auto my-2 my-lg-0">
+            <label for="csv-data"><span>Selecionar CSV</span></label>
+            <input type="file" name="data" id="csv-data">
+            <button type="submit">Carregar dados</button>
+          </form>
         </div>
       </div>
     </nav>
+
+    
   </header>
 
   <main class="container my-5">
     <div class="header">
-      <h1 class="title">Exames</h1>
+      <div>
+        <h1 class="title">Exames</h1>
+        <span id="results-count">0 Exames</span>
+      </div>
 
-      <form method="GET" class="search-form">
-        <span id="results_count">0 Exames</span>
+      <form method="get" class="search-form">
         <input name="token" type="text" placeholder="Pesquisar exame pelo token">
-        <button class="search-btn"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></button>
+        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
       </form>
     </div>
     <section id="exams"></section>

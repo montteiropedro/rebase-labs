@@ -1,6 +1,31 @@
 const fragment = new DocumentFragment();
 
-document.querySelector('.search-form').onsubmit = async (e) => {
+document.querySelector('#csv-import-form > input').onchange = (e) => {
+  document.querySelector('#csv-import-form > label > span').textContent = e.target.files[0].name;
+}
+
+document.querySelector('#csv-import-form').onsubmit = (e) => {
+  e.preventDefault();
+
+  const formData = new FormData();
+  formData.append('data', e.target.data.files[0]);
+
+  fetch('http://localhost:3000/import', {
+    method: 'POST',
+    body: formData
+  })
+    .then(res => {
+      if (res.ok) {
+        console.log('CSV Data successfully loaded');
+      } else {
+        throw new Error('CSV Data load failed');
+      }
+    })
+    .catch(error => console.error(error));
+}
+
+
+document.querySelector('.search-form').onsubmit = (e) => {
   e.preventDefault();
   const searchQuery = e.target.token.value;
   document.querySelector('section#exams').innerHTML = '';
@@ -18,7 +43,7 @@ function setResultColor(result, minLimit, maxLimit) {
   if (Number(result) > Number(maxLimit)) return 'test-result-danger';
 }
 
-async function fetchData(url = 'http://localhost:3000/exams/json') {
+function fetchData(url = 'http://localhost:3000/exams/json') {
   fetch(url)
     .then((res) => res.json())
     .then((data) => {
@@ -36,7 +61,7 @@ async function fetchData(url = 'http://localhost:3000/exams/json') {
 
           <div>
             <span class="exam-card--title">CPF do paciente</span>
-            <span class="exam-card--text">${exam.cpf}</span>
+            <span class="exam-card--text">${exam.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")}</span>
           </div>
 
           <span class="exam-card--text">${new Date(exam.result_date).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</span>
@@ -112,7 +137,7 @@ async function fetchData(url = 'http://localhost:3000/exams/json') {
         examDiv.children[1].appendChild(testsTable);
       });
 
-      document.querySelector('#results_count').textContent = `${data.length} Exames`;
+      document.querySelector('#results-count').textContent = `${data.length} Exames`;
     })
     .then(() => {
       document.querySelector('section#exams').appendChild(fragment);
@@ -124,7 +149,7 @@ async function fetchData(url = 'http://localhost:3000/exams/json') {
         });
       });
     })
-    .catch((error) => console.log(error));
+    .catch((error) => console.error(error));
 }
 
 window.onload = () => fetchData();

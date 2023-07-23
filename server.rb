@@ -1,6 +1,12 @@
 require 'sinatra'
 require 'rack/handler/puma'
-require './helpers/exams.rb'
+require_relative './helpers/exams.rb'
+require_relative './bin/import_from_csv.rb'
+
+post '/import' do
+  csv = params[:data][:tempfile];
+  Import.csv_data(csv);
+end
 
 get '/tests' do
   content_type :json
