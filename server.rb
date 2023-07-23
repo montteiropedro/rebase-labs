@@ -1,7 +1,7 @@
 require 'sinatra'
 require 'rack/handler/puma'
-require_relative './helpers/exams.rb'
-require_relative './bin/import_from_csv.rb'
+require_relative './helpers/exams_helper.rb'
+require_relative './helpers/import_helper.rb'
 
 post '/import' do
   csv = params[:data][:tempfile];
