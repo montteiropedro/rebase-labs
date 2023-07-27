@@ -12,7 +12,7 @@ module DB
   end
 
   def self.create_tables
-    db = PG.connect(host: HOST, user: USER, password: PASS)
+    db = create_db_connection
 
     db.exec("CREATE TABLE IF NOT EXISTS patients (id SERIAL,
                                                   cpf VARCHAR(11) NOT NULL PRIMARY KEY,
@@ -41,6 +41,17 @@ module DB
                                                     type_limits VARCHAR NOT NULL,
                                                     type_result VARCHAR NOT NULL,
                                                     UNIQUE (exam_token, type))")
+  end
+
+  def self.reset_tables
+    db = create_db_connection
+
+    db.exec("DROP TABLE exam_tests")
+    db.exec("DROP TABLE exams")
+    db.exec("DROP TABLE patients")
+    db.exec("DROP TABLE doctors")
+
+    create_tables
   end
 
   def self.insert_patients(db, data)

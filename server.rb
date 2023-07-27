@@ -6,6 +6,10 @@ require_relative './helpers/exams'
 require_relative './helpers/import'
 require_relative './helpers/db'
 
+get '/' do
+  redirect '/exams'
+end
+
 post '/import' do
   raw = CSV.read(params[:data][:tempfile]).flatten.join("\n");
   ExamsImporter.perform_async(raw)
@@ -29,6 +33,12 @@ end
 get '/exams/:token' do
   content_type :json
   Exams::Feature2.find(params[:token])
+end
+
+get '/reset' do
+  content_type :html
+  DB.reset_tables
+  redirect "/exams"
 end
 
 Rack::Handler::Puma.run(
