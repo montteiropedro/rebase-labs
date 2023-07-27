@@ -219,7 +219,6 @@ main > .header > .search-form > button[type="submit"]:hover > i {
 }
 
 .test-result-good { color: var(--result-good); }
-.test-result-neutral { color: var(--result-neutral); }
 .test-result-danger { color: var(--result-danger); }
 
 table {

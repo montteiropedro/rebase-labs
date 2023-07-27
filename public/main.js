@@ -37,10 +37,10 @@ document.querySelector('.search-form').onsubmit = (e) => {
   }
 };
 
-function setResultColor(result, minLimit, maxLimit) {
-  if (Number(result) >= Number(minLimit) && Number(result) <= Number(maxLimit)) return 'test-result-neutral';
-  if (Number(result) < Number(minLimit)) return 'test-result-good';
-  if (Number(result) > Number(maxLimit)) return 'test-result-danger';
+function setResultStyle(result, minLimit, maxLimit) {
+  if (Number(result) >= Number(minLimit) && Number(result) <= Number(maxLimit)) return { color: 'test-result-good', icon: 'check' };
+
+  return { color: 'test-result-danger', icon: 'exclamation' };
 }
 
 function fetchData(url = 'http://localhost:3000/exams/json') {
@@ -121,11 +121,15 @@ function fetchData(url = 'http://localhost:3000/exams/json') {
         exam.tests.forEach((test) => {
           const limits = test.limits.match(/\d+/g);
           const tr = document.createElement('tr');
+          const resultStyle = setResultStyle(test.result, limits[0], limits[1]);
 
           tr.innerHTML = `
           <td>${test.type}</td>
           <td>${test.limits}</td>
-          <td class="${setResultColor(test.result, limits[0], limits[1])}">${test.result}</td>
+          <td class="${resultStyle.color} d-flex justify-content-between align-items-center">
+            ${test.result}
+            <i class="fa-solid fa-circle-${resultStyle.icon}"></i>
+          </td>
         `;
 
           testsTable.children[1].appendChild(tr);
