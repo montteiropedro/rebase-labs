@@ -1,5 +1,5 @@
-require_relative 'db_helper.rb'
-require_relative 'formatter_helper.rb'
+require_relative 'db.rb'
+require_relative 'formatter.rb'
 
 module Exams
   module Feature1

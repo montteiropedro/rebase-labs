@@ -10,11 +10,15 @@ services:
     command: bash -c "bundle && ruby server.rb"
     ports:
       - "3000:3000"
+    environment:
+      REDIS_URL: redis://redis:6379/0
     depends_on:
       - db
+      - redis
+
   db:
     image: postgres
-    container_name: postgresdb
+    container_name: db
     ports:
       - "5432:5432"
     environment:
@@ -22,3 +26,20 @@ services:
       - POSTGRES_PASSWORD=admin
     volumes:
       - ./database:/var/lib/postgresql/data
+
+  redis:
+    image: redis
+    container_name: redis
+
+  sidekiq:
+    image: ruby
+    container_name: sidekiq
+    working_dir: /app
+    volumes:
+      - .:/app
+      - ./gems:/usr/local/bundle
+    environment:
+      REDIS_URL: redis://redis:6379/0
+    command: bash -c "sidekiq -r ./helpers/import.rb"
+    depends_on:
+      - redis

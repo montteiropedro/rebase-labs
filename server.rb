@@ -1,11 +1,14 @@
 require 'sinatra'
+require 'redis'
+require 'csv'
 require 'rack/handler/puma'
-require_relative './helpers/exams_helper.rb'
-require_relative './helpers/import_helper.rb'
+require_relative './helpers/exams'
+require_relative './helpers/import'
+require_relative './helpers/db'
 
 post '/import' do
-  csv = params[:data][:tempfile];
-  Import.csv_data(csv);
+  raw = CSV.read(params[:data][:tempfile]).flatten.join("\n");
+  ExamsImporter.perform_async(raw)
 end
 
 get '/tests' do

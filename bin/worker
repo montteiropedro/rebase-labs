@@ -1,0 +1,7 @@
+#!/bin/bash
+
+docker compose run \
+  --rm \
+  --name sidekiq \
+  web \
+  bash -c "sidekiq -r ./helpers/import.rb"
