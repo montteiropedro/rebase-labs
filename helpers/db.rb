@@ -17,7 +17,7 @@ module DB
     db.exec("CREATE TABLE IF NOT EXISTS patients (id SERIAL,
                                                   cpf VARCHAR(11) NOT NULL PRIMARY KEY,
                                                   name VARCHAR NOT NULL,
-                                                  email VARCHAR NOT NULL UNIQUE,
+                                                  email VARCHAR NOT NULL,
                                                   birthday VARCHAR NOT NULL,
                                                   address VARCHAR NOT NULL,
                                                   city VARCHAR NOT NULL,
@@ -27,7 +27,7 @@ module DB
                                                 crm VARCHAR(10) NOT NULL PRIMARY KEY,
                                                 crm_state VARCHAR(2) NOT NULL,
                                                 name VARCHAR NOT NULL,
-                                                email VARCHAR NOT NULL UNIQUE)")
+                                                email VARCHAR NOT NULL UNIQUE DEFAULT 'N/A')")
 
     db.exec("CREATE TABLE IF NOT EXISTS exams (id SERIAL,
                                               patient_cpf VARCHAR(11) NOT NULL REFERENCES patients(cpf),
@@ -81,29 +81,26 @@ module DB
     exams = data.uniq { |obj| obj['token resultado exame'] }
     
     exams.each do |d|
-      patient_exists = db.exec("SELECT cpf FROM patients WHERE cpf = $1", [d['cpf'].gsub(/[\-\.]/, '')]).to_a.any?
-      doctor_exists = db.exec("SELECT crm FROM doctors WHERE crm = $1", [d['crm médico']]).to_a.any?
-
-      next unless patient_exists && doctor_exists;
-
       db.exec(
         "INSERT INTO exams (patient_cpf, doctor_crm, token, date) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING;",
         [d['cpf'].gsub(/[\-\.]/, ''), d['crm médico'], d['token resultado exame'], d['data exame']]
       )
+
+    rescue => e
+      puts e
     end
   end
 
   def self.insert_exam_tests(db, data)
     data.each do |d|
-      exam_exists = db.exec("SELECT token FROM exams WHERE token = $1", [d['token resultado exame']]).to_a.any?
-      
-      next unless exam_exists;
-
       db.exec(
         "INSERT INTO exam_tests (exam_token, type, type_limits, type_result) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING;",
         [d['token resultado exame'], d['tipo exame'], d['limites tipo exame'], d['resultado tipo exame']]
       )
+    rescue => e
+      puts e
     end
+
   end
 
   def self.insert_csv_data(csv_data)
