@@ -1,5 +1,4 @@
 require 'pg'
-require 'date'
 require_relative 'formatter'
 
 module DB
@@ -8,11 +7,15 @@ module DB
   PASS = 'admin'
 
   def self.create_db_connection
+    return PG.connect(dbname: 'test', host: HOST, user: USER, password: PASS) if ENV['APP_ENV'] == 'test'
+      
     PG.connect(host: HOST, user: USER, password: PASS)
   end
 
-  def self.create_tables
-    db = create_db_connection
+  def self.create_tables(db)
+    tables_count = db.exec("SELECT * FROM pg_tables WHERE tablename IN ('patients', 'doctors', 'exams', 'exam_tests');").num_tuples
+
+    return if tables_count == 4
 
     db.exec("CREATE TABLE IF NOT EXISTS patients (id SERIAL,
                                                   cpf VARCHAR(11) NOT NULL PRIMARY KEY,
@@ -46,12 +49,12 @@ module DB
   def self.reset_tables
     db = create_db_connection
 
-    db.exec("DROP TABLE exam_tests")
-    db.exec("DROP TABLE exams")
-    db.exec("DROP TABLE patients")
-    db.exec("DROP TABLE doctors")
+    db.exec("DROP TABLE IF EXISTS exam_tests")
+    db.exec("DROP TABLE IF EXISTS exams")
+    db.exec("DROP TABLE IF EXISTS patients")
+    db.exec("DROP TABLE IF EXISTS doctors")
 
-    create_tables
+    create_tables(db)
   end
 
   def self.insert_patients(db, data)
@@ -100,7 +103,6 @@ module DB
     rescue => e
       puts e
     end
-
   end
 
   def self.insert_csv_data(csv_data)
@@ -116,11 +118,22 @@ module DB
       end
     end
     
-    DB.create_tables
-
+    create_tables(db)
     insert_patients(db, data)
     insert_doctors(db, data)
     insert_exams(db, data)
     insert_exam_tests(db, data)
+  end
+
+  def self.prepare_test_db
+    PG.connect(host: HOST, user: USER, password: PASS).exec("CREATE DATABASE test;")
+    create_tables(create_db_connection)
+  rescue
+    puts 'NOTICE:  database "test" already exists, skipping'
+  end
+
+  def self.drop_test_db
+    db = create_db_connection
+    db.exec("DROP DATABASE test;")
   end
 end

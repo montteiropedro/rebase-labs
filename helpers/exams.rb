@@ -4,8 +4,8 @@ require_relative 'formatter.rb'
 module Exams
   module Feature1
     def self.all
-      db = DB::create_db_connection
-  
+      db = DB.create_db_connection
+
       data = db.exec('
         SELECT p.cpf, p.name AS "patient_name", p.email AS "patient_email", p.birthday AS "patient_birthday", p.address AS "patient_address", p.city AS "patient_city", p.state AS "patient_state",
                 d.crm AS "doctor_crm", d.crm_state AS "doctor_crm_state", d.name AS "doctor_name", d.email AS "doctor_email",
@@ -19,15 +19,15 @@ module Exams
         JOIN doctors AS d
           ON e.doctor_crm = d.crm;
       ')
-  
-      data.to_a.to_json
+
+      data.to_a
     end
   end
 
   module Feature2
     def self.all
-      db = DB::create_db_connection
-  
+      db = DB.create_db_connection
+
       exam_data = db.exec("
         SELECT p.cpf, p.name AS patient_name, p.email AS patient_email, p.birthday AS patient_birthday,
                 d.crm AS doctor_crm, d.crm_state AS doctor_crm_state, d.name AS doctor_name, d.email AS doctor_email,
@@ -38,13 +38,13 @@ module Exams
         JOIN doctors AS d
           ON e.doctor_crm = d.crm;
       ")
-  
-      exam_data.map { |d| Formatter::Feature2.data(db, d) }.to_json
+
+      exam_data.map { |d| Formatter::Feature2.data(db, d) }
     end
   
     def self.find(token)
-      db = DB::create_db_connection
-  
+      db = DB.create_db_connection
+
       exam_data = db.exec("
         SELECT p.cpf, p.name AS patient_name, p.email AS patient_email, p.birthday AS patient_birthday,
                 d.crm AS doctor_crm, d.crm_state AS doctor_crm_state, d.name AS doctor_name, d.email AS doctor_email,
@@ -57,8 +57,8 @@ module Exams
         WHERE
           e.token ILIKE $1;
       ", ["%#{token}%"])
-  
-      exam_data.map { |d| Formatter::Feature2.data(db, d) }.to_json
+
+      exam_data.map { |d| Formatter::Feature2.data(db, d) }
     end
   end
 end

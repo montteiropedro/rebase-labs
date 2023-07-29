@@ -1,8 +1,10 @@
 source 'https://rubygems.org'
 
-gem 'rack'
-gem 'sinatra'
-gem 'puma'
 gem 'pg'
+gem 'puma'
+gem 'rack'
+gem 'rack-test'
 gem 'redis'
+gem 'rspec'
 gem 'sidekiq'
+gem 'sinatra'

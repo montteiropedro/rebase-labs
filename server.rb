@@ -17,12 +17,12 @@ end
 
 get '/tests' do
   content_type :json
-  Exams::Feature1.all
+  Exams::Feature1.all.to_json
 end
 
 get '/exams/json' do
   content_type :json
-  Exams::Feature2.all
+  Exams::Feature2.all.to_json
 end
 
 get '/exams' do
@@ -32,7 +32,10 @@ end
 
 get '/exams/:token' do
   content_type :json
-  Exams::Feature2.find(params[:token])
+  data = Exams::Feature2.find(params[:token])
+
+  status 404 if data.empty?
+  data.to_json
 end
 
 get '/reset' do
@@ -41,8 +44,10 @@ get '/reset' do
   redirect "/exams"
 end
 
-Rack::Handler::Puma.run(
-  Sinatra::Application,
-  Port: 3000,
-  Host: '0.0.0.0'
-)
+if ENV['APP_ENV'] != 'test'
+  Rack::Handler::Puma.run(
+    Sinatra::Application,
+    Port: 3000,
+    Host: '0.0.0.0'
+  )
+end
