@@ -19,6 +19,7 @@ services:
   db:
     image: postgres
     container_name: db
+    init: true
     ports:
       - "5432:5432"
     environment:
@@ -26,6 +27,7 @@ services:
       - POSTGRES_PASSWORD=admin
     volumes:
       - ./database:/var/lib/postgresql/data
+      - ./helpers:/docker-entrypoint-initdb.d
 
   redis:
     image: redis

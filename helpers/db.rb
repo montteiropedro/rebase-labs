@@ -13,11 +13,11 @@ module DB
   end
 
   def self.create_tables(db)
-    tables_count = db.exec("SELECT * FROM pg_tables WHERE tablename IN ('patients', 'doctors', 'exams', 'exam_tests');").num_tuples
+    tables_count = db.exec("SELECT FROM pg_tables WHERE tablename IN ('patients', 'doctors', 'exams', 'exam_tests');").num_tuples
 
     return if tables_count == 4
 
-    db.exec("CREATE TABLE IF NOT EXISTS patients (id SERIAL,
+    db.exec("CREATE TABLE IF NOT EXISTS patients (id uuid DEFAULT uuid_generate_v4 (),
                                                   cpf VARCHAR(11) NOT NULL PRIMARY KEY,
                                                   name VARCHAR NOT NULL,
                                                   email VARCHAR NOT NULL,
@@ -26,19 +26,19 @@ module DB
                                                   city VARCHAR NOT NULL,
                                                   state VARCHAR NOT NULL)")
 
-    db.exec("CREATE TABLE IF NOT EXISTS doctors (id SERIAL,
+    db.exec("CREATE TABLE IF NOT EXISTS doctors (id uuid DEFAULT uuid_generate_v4 (),
                                                 crm VARCHAR(10) NOT NULL PRIMARY KEY,
                                                 crm_state VARCHAR(2) NOT NULL,
                                                 name VARCHAR NOT NULL,
-                                                email VARCHAR NOT NULL UNIQUE DEFAULT 'N/A')")
+                                                email VARCHAR NOT NULL UNIQUE)")
 
-    db.exec("CREATE TABLE IF NOT EXISTS exams (id SERIAL,
+    db.exec("CREATE TABLE IF NOT EXISTS exams (id uuid DEFAULT uuid_generate_v4 (),
                                               patient_cpf VARCHAR(11) NOT NULL REFERENCES patients(cpf),
                                               doctor_crm VARCHAR(10) NOT NULL REFERENCES doctors(crm),
                                               token VARCHAR(6) NOT NULL UNIQUE PRIMARY KEY,
                                               date VARCHAR NOT NULL)")
 
-    db.exec("CREATE TABLE IF NOT EXISTS exam_tests (id SERIAL,
+    db.exec("CREATE TABLE IF NOT EXISTS exam_tests (id uuid DEFAULT uuid_generate_v4 (),
                                                     exam_token VARCHAR(6) NOT NULL REFERENCES exams(token),
                                                     type VARCHAR NOT NULL,
                                                     type_limits VARCHAR NOT NULL,
@@ -118,7 +118,6 @@ module DB
       end
     end
     
-    create_tables(db)
     insert_patients(db, data)
     insert_doctors(db, data)
     insert_exams(db, data)
@@ -127,7 +126,9 @@ module DB
 
   def self.prepare_test_db
     PG.connect(host: HOST, user: USER, password: PASS).exec("CREATE DATABASE test;")
-    create_tables(create_db_connection)
+    db = create_db_connection
+    db.exec('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";')
+    create_tables(db)
   rescue
     puts 'NOTICE:  database "test" already exists, skipping'
   end
