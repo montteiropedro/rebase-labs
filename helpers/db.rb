@@ -132,9 +132,4 @@ module DB
   rescue
     puts 'NOTICE:  database "test" already exists, skipping'
   end
-
-  def self.drop_test_db
-    db = create_db_connection
-    db.exec("DROP DATABASE test;")
-  end
 end
