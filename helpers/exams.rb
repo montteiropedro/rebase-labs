@@ -2,7 +2,7 @@ require_relative 'db.rb'
 require_relative 'formatter.rb'
 
 module Exams
-  module Feature1
+  module V1
     def self.all
       db = DB.create_db_connection
 
@@ -24,7 +24,7 @@ module Exams
     end
   end
 
-  module Feature2
+  module V2
     def self.all
       db = DB.create_db_connection
 

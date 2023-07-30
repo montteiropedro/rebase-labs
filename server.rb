@@ -23,23 +23,35 @@ end
 
 namespace '/api' do
   post '/v1/import' do
-    raw = CSV.read(params[:data][:tempfile]).flatten.join("\n");
-    ExamsImporter.perform_async(raw)
+    content_type :json
+
+    begin
+      raw = CSV.read(params[:data][:tempfile]).flatten.join("\n");
+      ExamsImporter.perform_async(raw)
+      body({ message: 'CSV received successfully' }).to_json
+    rescue
+      status 400
+      body({
+        error: 'Invalid file type',
+        permitted_file_type: 'text/csv',
+        received_file_type: params[:data][:type]
+      }).to_json
+    end
   end
 
   get '/v1/exams' do
     content_type :json
-    Exams::Feature1.all.to_json
+    Exams::V1.all.to_json
   end
   
   get '/v2/exams' do
     content_type :json
-    Exams::Feature2.all.to_json
+    Exams::V2.all.to_json
   end
   
   get '/v2/exams/:token' do
     content_type :json
-    data = Exams::Feature2.find(params[:token])
+    data = Exams::V2.find(params[:token])
   
     status 404 if data.empty?
     data.to_json
