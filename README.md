@@ -1,20 +1,21 @@
-# Rebase Labs
+<h1 align="center">Rebase Labs</h1>
 
-Uma app web para listagem de exames médicos.
+<p align="center">
+  <img src="https://img.shields.io/static/v1?label=docker&message=latest&color=blue&style=for-the-badge&logo=docker"/>
+  <img src="https://img.shields.io/static/v1?label=Ruby&message=latest&color=darkred&style=for-the-badge&logo=ruby"/>
+  <img src="https://img.shields.io/badge/javascript-grey?style=for-the-badge&logo=javascript"/>
+  <img src="https://img.shields.io/badge/HTML-grey?style=for-the-badge&logo=HTML5"/>
+  <img src="https://img.shields.io/badge/CSS-grey?style=for-the-badge&logo=CSS3"/>
+  <img src="https://img.shields.io/static/v1?label=postgresql&message=latest&color=699eca&style=for-the-badge&logo=postgresql"/>
+  <img src="https://img.shields.io/static/v1?label=redis&message=latest&color=red&style=for-the-badge&logo=redis"/>
+  <img src="https://img.shields.io/static/v1?label=sidekiq&message=latest&color=red&style=for-the-badge&logo=sidekiq"/>
+</p>
+<p align="center">
+  <img src="https://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=RED&style=for-the-badge"/>
+</p>
 
----
-
-## Tech Stack
-
-* Docker
-* Ruby
-* Javascript
-* HTML
-* CSS
-* Sidekiq
-* Redis
-
----
+## Sobre o Projeto
+Rebase Labs é uma app web para listagem de exames médicos que está sendo construida durante o laboratório da <a href="https://www.rebase.com.br/" target="_blank">Rebase</a> com o auxílio de profissionais incríveis da área.
 
 ## Configuração e Inicialização do Projeto
 Antes de começarmos a configuração do projeto, vale salientar que as ferramentas ___Docker___ e ___Ruby___ já precisam estar instaladas em seu computador. Com as ferramenas citadas anteriormente em mãos — e estando na pasta raiz do projeto — devemos executar o seguinte comando:
