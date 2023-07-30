@@ -2,14 +2,18 @@ require 'pg'
 require_relative 'formatter'
 
 module DB
-  HOST = 'db'
-  USER = 'admin'
-  PASS = 'admin'
+  if ENV['APP_ENV'] == 'test'
+    HOST = 'db_test'
+    USER = 'test'
+    PASS = 'test'
+  else
+    HOST = 'db'
+    USER = 'admin'
+    PASS = 'admin'
+  end
 
   def self.create_db_connection
-    return PG.connect(dbname: 'test', host: HOST, user: USER, password: PASS) if ENV['APP_ENV'] == 'test'
-      
-    PG.connect(host: HOST, user: USER, password: PASS)
+    db = PG.connect(host: HOST, user: USER, password: PASS)
   end
 
   def self.create_tables(db)
@@ -122,14 +126,5 @@ module DB
     insert_doctors(db, data)
     insert_exams(db, data)
     insert_exam_tests(db, data)
-  end
-
-  def self.prepare_test_db
-    PG.connect(host: HOST, user: USER, password: PASS).exec("CREATE DATABASE test;")
-    db = create_db_connection
-    db.exec('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";')
-    create_tables(db)
-  rescue
-    puts 'NOTICE:  database "test" already exists, skipping'
   end
 end

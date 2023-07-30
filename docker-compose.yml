@@ -13,6 +13,7 @@ services:
     environment:
       REDIS_URL: redis://redis:6379/0
     depends_on:
+      - db_test
       - db
       - redis
 
@@ -27,6 +28,18 @@ services:
       - POSTGRES_PASSWORD=admin
     volumes:
       - ./database:/var/lib/postgresql/data
+      - ./helpers:/docker-entrypoint-initdb.d
+
+  db_test:
+    image: postgres
+    container_name: db_test
+    init: true
+    ports:
+      - "2345:2345"
+    environment:
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+    volumes:
       - ./helpers:/docker-entrypoint-initdb.d
 
   redis:
