@@ -10,7 +10,7 @@ document.querySelector('#csv-import-form').onsubmit = (e) => {
   const formData = new FormData();
   formData.append('data', e.target.data.files[0]);
 
-  fetch('http://localhost:3000/import', {
+  fetch('http://localhost:3000/api/v1/import', {
     method: 'POST',
     body: formData
   })
@@ -31,7 +31,7 @@ document.querySelector('.search-form').onsubmit = (e) => {
   document.querySelector('section#exams').innerHTML = '';
 
   if (searchQuery !== '') {
-    fetchData(`http://localhost:3000/exams/${searchQuery}`);
+    fetchData(`http://localhost:3000/api/v2/exams/${searchQuery}`);
   } else {
     fetchData();
   }
@@ -43,7 +43,7 @@ function setResultStyle(result, minLimit, maxLimit) {
   return { color: 'test-result-danger', icon: 'exclamation' };
 }
 
-function fetchData(url = 'http://localhost:3000/exams/json') {
+function fetchData(url = 'http://localhost:3000/api/v2/exams') {
   fetch(url)
     .then((res) => res.json())
     .then((data) => {

@@ -13,11 +13,11 @@ describe 'API de exames' do
     DB.reset_tables
   end
 
-  context 'GET /exams/json' do
+  context 'GET /api/v2/exams' do
     it 'retorna todos os exames cadastrados (formatados de acordo com a Feature 2)' do
       data2_csv = CSV.read('./spec/support/data2.csv').flatten.join("\n")
       DB.insert_csv_data(data2_csv)
-      get 'exams/json'
+      get '/api/v2/exams'
 
       expect(last_response).to be_ok
       expect(last_response.content_type).to include 'application/json'
@@ -45,7 +45,7 @@ describe 'API de exames' do
     end
 
     it 'retorna vazio quando não existem exames cadastrados' do
-      get 'exams/json'
+      get '/api/v2/exams'
 
       expect(last_response).to be_ok
       expect(last_response.content_type).to include 'application/json'
@@ -54,12 +54,12 @@ describe 'API de exames' do
     end
   end
 
-  context 'GET /exams/:token' do
+  context 'GET /api/v2/exams/:token' do
     context 'quando é passado um token completo' do
       it 'retorna o exame vinculado ao token (formatados de acordo com a Feature 3)' do
         data2_csv = CSV.read('./spec/support/data2.csv').flatten.join("\n")
         DB.insert_csv_data(data2_csv)
-        get 'exams/TOKEN1'
+        get '/api/v2/exams/TOKEN1'
 
         expect(last_response).to be_ok
         expect(last_response.content_type).to include 'application/json'
@@ -83,9 +83,9 @@ describe 'API de exames' do
       end
   
       it 'retorna vazio quando o token não existe' do
-        get 'exams/TOKEN1'
+        get '/api/v2/exams/TOKEN1'
 
-        expect(last_response).to be_not_found # TODO: mudar o status para not_found
+        expect(last_response).to be_not_found
         expect(last_response.content_type).to include 'application/json'
         response_body = JSON.parse(last_response.body)
         expect(response_body).to be_empty
@@ -96,7 +96,7 @@ describe 'API de exames' do
       it 'retorna todos exames que possuem aquela sequência de caracteres no seu token (formatados de acordo com a Feature 3)' do
         data3_csv = CSV.read('./spec/support/data3.csv').flatten.join("\n")
         DB.insert_csv_data(data3_csv)
-        get 'exams/TOK'
+        get '/api/v2/exams/TOK'
 
         expect(last_response).to be_ok
         expect(last_response.content_type).to include 'application/json'
@@ -115,7 +115,7 @@ describe 'API de exames' do
       it 'retorna vazio se nenhum exame possuir aquela sequência de caracteres no seu token' do
         data3_csv = CSV.read('./spec/support/data3.csv').flatten.join("\n")
         DB.insert_csv_data(data3_csv)
-        get 'exams/N0T'
+        get '/api/v2/exams/N0T'
 
         expect(last_response).to be_not_found
         expect(last_response.content_type).to include 'application/json'

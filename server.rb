@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'sinatra/namespace'
 require 'redis'
 require 'csv'
 require 'rack/handler/puma'
@@ -10,38 +11,39 @@ get '/' do
   redirect '/exams'
 end
 
-post '/import' do
-  raw = CSV.read(params[:data][:tempfile]).flatten.join("\n");
-  ExamsImporter.perform_async(raw)
-end
-
-get '/tests' do
-  content_type :json
-  Exams::Feature1.all.to_json
-end
-
-get '/exams/json' do
-  content_type :json
-  Exams::Feature2.all.to_json
-end
-
 get '/exams' do
   content_type :html
   File.open('index.html')
 end
 
-get '/exams/:token' do
-  content_type :json
-  data = Exams::Feature2.find(params[:token])
-
-  status 404 if data.empty?
-  data.to_json
-end
-
 get '/reset' do
-  content_type :html
   DB.reset_tables
   redirect "/exams"
+end
+
+namespace '/api' do
+  post '/v1/import' do
+    raw = CSV.read(params[:data][:tempfile]).flatten.join("\n");
+    ExamsImporter.perform_async(raw)
+  end
+
+  get '/v1/exams' do
+    content_type :json
+    Exams::Feature1.all.to_json
+  end
+  
+  get '/v2/exams' do
+    content_type :json
+    Exams::Feature2.all.to_json
+  end
+  
+  get '/v2/exams/:token' do
+    content_type :json
+    data = Exams::Feature2.find(params[:token])
+  
+    status 404 if data.empty?
+    data.to_json
+  end
 end
 
 if ENV['APP_ENV'] != 'test'
