@@ -39,12 +39,12 @@ Primeiramente precisamos realizar a clonagem do projeto para sua máquina local,
 
 Clonagem via HTTPS:
 ```bash
-git clone https://github.com/montteiropedro/rebase-labs.git # HTTPS
+git clone https://github.com/montteiropedro/rebase-labs.git
 ```
 
 Clonagem via SSH:
 ```bash
-git clone git@github.com:montteiropedro/rebase-labs.git # SSH
+git clone git@github.com:montteiropedro/rebase-labs.git
 ```
 
 Logo após realizar a clonagem, entre no diretório criado, podemos fazer isto com o seguinte comando:
