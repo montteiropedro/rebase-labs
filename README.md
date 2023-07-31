@@ -83,7 +83,7 @@ No Firefox/Chrome podemos recarregar a página limpando o cache da seguinte form
   * Agora, enquanto segura a tecla SHIF, aperte o botão de recarregar a página
 
 ## Como executar os testes?
-### Para executar o scripts de teste, precisaremos que a aplicação esteja em execução.
+### Para executar o script de teste, precisaremos que a aplicação esteja em execução.
 Com a aplicação rodando, devemos abrir um novo terminal também localizado no diretório raiz do projeto e em seguida rodar o comando abaixo:
 
 ```bash
@@ -97,7 +97,7 @@ bin/rspec
 </details>
 
 ## Scripts Auxiliares
-Agora vamos falar um pouco sobre os ___scripts___ que se encontram na diretório `/bin`.
+Agora vamos falar um pouco sobre os demais ___scripts___ que se encontram na diretório `/bin`.
 
 ### Para executar os scripts a seguir, precisaremos que a aplicação esteja em execução.
 
