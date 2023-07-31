@@ -1,14 +1,26 @@
 <h1 align="center">Rebase Labs</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/static/v1?label=docker&message=latest&color=blue&style=for-the-badge&logo=docker"/>
-  <img src="https://img.shields.io/static/v1?label=Ruby&message=latest&color=darkred&style=for-the-badge&logo=ruby"/>
-  <img src="https://img.shields.io/badge/javascript-grey?style=for-the-badge&logo=javascript"/>
-  <img src="https://img.shields.io/badge/HTML-grey?style=for-the-badge&logo=HTML5"/>
-  <img src="https://img.shields.io/badge/CSS-grey?style=for-the-badge&logo=CSS3"/>
-  <img src="https://img.shields.io/static/v1?label=postgresql&message=latest&color=699eca&style=for-the-badge&logo=postgresql"/>
-  <img src="https://img.shields.io/static/v1?label=redis&message=latest&color=red&style=for-the-badge&logo=redis"/>
-  <img src="https://img.shields.io/static/v1?label=sidekiq&message=latest&color=red&style=for-the-badge&logo=sidekiq"/>
+  <a href="https://docs.docker.com/">
+    <img src="https://img.shields.io/badge/docker-blue?style=for-the-badge&logo=docker&logoColor=white"/>
+  </a>
+  <a href="https://www.ruby-lang.org/en/">
+    <img src="https://img.shields.io/badge/ruby-darkred?style=for-the-badge&logo=ruby&logoColor=white"/>
+  </a>
+  <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">
+    <img src="https://img.shields.io/badge/javascript-yellow?style=for-the-badge&logo=javascript&logoColor=white"/>
+  </a>
+  <img src="https://img.shields.io/badge/html-darkorange?style=for-the-badge&logo=html5&logoColor=white"/>
+  <img src="https://img.shields.io/badge/css-blue?style=for-the-badge&logo=css3&logoColor=white"/>
+  <a href="https://www.postgresql.org/">
+    <img src="https://img.shields.io/badge/postgresql-699eca?style=for-the-badge&logo=postgresql&logoColor=white"/>
+  </a>
+  <a href="https://redis.io/docs/">
+    <img src="https://img.shields.io/badge/redis-red?style=for-the-badge&logo=redis&logoColor=white"/>
+  </a>
+  <a href="https://github.com/sidekiq/sidekiq/wiki">
+    <img src="https://img.shields.io/badge/sidekiq-gray?style=for-the-badge&logo=sidekiq&logoColor=white"/>
+  </a>
 </p>
 <p align="center">
   <img src="https://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=RED&style=for-the-badge"/>
@@ -18,6 +30,23 @@
 Rebase Labs é uma app web para listagem de exames médicos que está sendo construida durante o laboratório da <a href="https://www.rebase.com.br/" target="_blank">Rebase</a> com o auxílio de profissionais incríveis da área.
 
 ## Configuração e Inicialização do Projeto
+Primeiramente precisamos realizar a clonagem do projeto para sua máquina local, podemos fazer isto com o seguinte comando:
+
+Clonagem via HTTPS:
+```bash
+git clone https://github.com/montteiropedro/rebase-labs.git # HTTPS
+```
+
+Clonagem via SSH:
+```bash
+git clone git@github.com:montteiropedro/rebase-labs.git # SSH
+```
+
+Logo após realizar a clonagem, entre no diretório criado, podemos fazer isto com o seguinte comando:
+```bash
+cd rebase-labs
+```
+
 Antes de começarmos a configuração do projeto, vale salientar que as ferramentas ___Docker___ e ___Ruby___ já precisam estar instaladas em seu computador. Com as ferramenas citadas anteriormente em mãos — e estando na pasta raiz do projeto — devemos executar o seguinte comando:
 
 ```bash
@@ -33,19 +62,24 @@ Para terminar a execução do projeto, basta clicar `CTRL + C`.
 
 Para iniciar o projeto novamente basta utilizar o comando `docker compose up` novamente. Este comando em uma primeira execução configura e inicializa e a partir do momento em que tudo já esta configurado ele apenas inicia o projeto.
 
+Quando sua aplicação esta em execução você pode acessa-lá através do seguinte endereço: http://localhost:3000
+
+## Como executar os testes?
+Para realizar a execução dos testes do projeto, tudo o que precisamos é executar um script que está localizado no diretório `/bin`. Estando na pasta raiz do seu projeto execute o comando abaixo:
+
+```bash
+bin/rspec
+```
+
+ * __No momento os testes ainda são poucos, mas vou trabalhar para aumentar o número de testes e cobertura do projeto__
+
 ## Scripts Auxiliares
 Agora vamos falar um pouco sobre os ___scripts___ que se encontram na diretório `/bin`.
 
 __import script__: nos possibilita fazer a importação dos dados do arquivo ___data.csv___ — que se encontra no diretório raiz do projeto — para a database principal e pode ser executado da seguinte forma:
 
 ```bash
-bin/import
-```
-
-__rspec script__: nos possibilita executar todos os testes presentes dentro do diretório `/spec` e pode ser executado da seguinte forma:
-
-```bash
-bin/rspec
+docker exec web ruby ./bin/import.rb
 ```
 
 __db script__: nos possibilita entrar no console da database principal e pode ser executado da seguinte forma:

@@ -55,6 +55,7 @@ services:
       - ./gems:/usr/local/bundle
     environment:
       REDIS_URL: redis://redis:6379/0
-    command: bash -c "sidekiq -r ./helpers/import.rb"
+    command: bash -c "bundle && bundle exec sidekiq -r ./helpers/import.rb"
     depends_on:
       - redis
+      - web
