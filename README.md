@@ -29,6 +29,11 @@
 ## Sobre o Projeto
 Rebase Labs é uma app web para listagem de exames médicos que está sendo construida durante o laboratório da <a href="https://www.rebase.com.br/" target="_blank">Rebase</a> com o auxílio de profissionais incríveis da área.
 
+<p align="center">
+  <img src="./images/app1.png" alt="app1" width="600" style="margin-right: 5px" />
+  <img src="./images/app2.png" alt="app2" width="600" style="margin-left: 5px"/>
+</p>
+
 ## Configuração e Inicialização do Projeto
 Primeiramente precisamos realizar a clonagem do projeto para sua máquina local, podemos fazer isto com o seguinte comando:
 
@@ -47,10 +52,11 @@ Logo após realizar a clonagem, entre no diretório criado, podemos fazer isto c
 cd rebase-labs
 ```
 
-Antes de começarmos a configuração do projeto, vale salientar que as ferramentas ___Docker___ e ___Ruby___ já precisam estar instaladas em seu computador. Com as ferramenas citadas anteriormente em mãos — e estando na pasta raiz do projeto — devemos executar o seguinte comando:
+Antes de começarmos a configuração do projeto, vale salientar que as ferramentas ___Docker___ e ___Ruby___ já precisam estar instaladas em seu computador.
+Com as ferramenas citadas anteriormente em mãos — e estando no diretório raiz do projeto — devemos executar o seguinte comando:
 
 ```bash
-  docker compose up
+  bin/dev
 ```
 
 O comando anterior irá preparar o ambiente do nosso projeto. De forma resumida este comando:
@@ -58,41 +64,79 @@ O comando anterior irá preparar o ambiente do nosso projeto. De forma resumida 
   * Cria e configura todos os containers citados anteriormente usando as imagens baixadas
   * Inicializa os conteiners e conecta todos os containers em uma mesma rede
 
-Para terminar a execução do projeto, basta clicar `CTRL + C`.
+__Para terminar a execução do projeto, basta clicar `CTRL + C`.__
 
-Para iniciar o projeto novamente basta utilizar o comando `docker compose up` novamente. Este comando em uma primeira execução configura e inicializa e a partir do momento em que tudo já esta configurado ele apenas inicia o projeto.
+__Para iniciar o projeto novamente basta utilizar o comando `bin/dev` novamente.__ Este comando em uma primeira execução configura e inicializa e a partir do momento em que tudo já esta configurado ele apenas inicia o projeto.
 
-Quando sua aplicação esta em execução você pode acessa-lá através do seguinte endereço: http://localhost:3000
+__Quando a aplicação está em execução você pode acessa-lá através do seguinte endereço: http://localhost:3000__
+
+O comando `CTRL + C` termina a execução do comando `bin/dev` mas não remove os containers. Caso você preciso removê-los, não se preocure, temos um comando preparado para está situação também:
+```bash
+bin/down
+```
+
+## Esta tendo problemas com o CSS?
+Caso a aplicação com uma estilização meio quebrada, aguarde alguns segundos e recarregue a página limpando o cache, isso provavelmente resolverá o problema.
+
+No Firefox/Chrome podemos recarregar a página limpando o cache da seguinte forma:
+  * Aperte e segure a tecla SHIFT
+  * Agora, enquanto segura a tecla SHIF, aperte o botão de recarregar a página
 
 ## Como executar os testes?
-Para realizar a execução dos testes do projeto, tudo o que precisamos é executar um script que está localizado no diretório `/bin`. Estando na pasta raiz do seu projeto execute o comando abaixo:
+### Para executar o scripts de teste, precisaremos que a aplicação esteja em execução.
+Com a aplicação rodando, devemos abrir um novo terminal também localizado no diretório raiz do projeto e em seguida rodar o comando abaixo:
 
 ```bash
 bin/rspec
 ```
+  * __No momento os testes ainda são poucos, mas vou trabalhar para aumentar o número de testes e cobertura do projeto__
 
- * __No momento os testes ainda são poucos, mas vou trabalhar para aumentar o número de testes e cobertura do projeto__
+<details>
+  <summary>Exemplo no terminal</summary>
+  <img src="./images/rspec.png" alt="rspec" align="center" />
+</details>
 
 ## Scripts Auxiliares
 Agora vamos falar um pouco sobre os ___scripts___ que se encontram na diretório `/bin`.
 
+### Para executar os scripts a seguir, precisaremos que a aplicação esteja em execução.
+
 __import script__: nos possibilita fazer a importação dos dados do arquivo ___data.csv___ — que se encontra no diretório raiz do projeto — para a database principal e pode ser executado da seguinte forma:
 
-```bash
-docker exec web ruby ./bin/import.rb
-```
+> ```bash
+> docker exec web ruby ./bin/import.rb
+> ```
+> 
+> <details>
+>   <summary>Exemplo no terminal</summary>
+>   <img src="./images/import.png" alt="import" align="center" />
+> </details>
+
+<br>
 
 __db script__: nos possibilita entrar no console da database principal e pode ser executado da seguinte forma:
 
-```bash
-bin/db
-```
+> ```bash
+> bin/db
+> ```
+> 
+> <details>
+>   <summary>Exemplo no terminal</summary>
+>   <img src="./images/db.png" alt="db" align="center" />
+> </details>
+
+<br>
 
 **db_test script**: nos possibilita entrar no console da database de testes e pode ser executado da seguinte forma:
-
-```bash
-bin/db_test
-```
+> 
+> ```bash
+> bin/db_test
+> ```
+> 
+> <details>
+>   <summary>Exemplo no terminal</summary>
+>   <img src="./images/db_test.png" alt="db_test" align="center" />
+> </details>
 
 ## Endpoints do Projeto
 
