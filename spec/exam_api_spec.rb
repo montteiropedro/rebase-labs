@@ -9,6 +9,10 @@ describe 'API de exames' do
     Sinatra::Application
   end
 
+  after :each do
+    DB.reset_tables
+  end
+
   context 'GET /api/v2/exams' do
     it 'retorna todos os exames cadastrados (formatados de acordo com a Feature 2)' do
       data2_csv = CSV.read('./spec/support/data2.csv').flatten.join("\n")
@@ -38,8 +42,6 @@ describe 'API de exames' do
       expect(response_body[1]['result_token']).to eq 'TOKEN2'
       expect(response_body[1]['doctor']['crm']).to eq 'B0002IQM67'
       expect(response_body[1]['tests'].size).to eq 2
-
-      DB.reset_tables
     end
 
     it 'retorna vazio quando não existem exames cadastrados' do
@@ -78,8 +80,6 @@ describe 'API de exames' do
         expect(response_body[0]['tests'][1]['type']).to eq 'leucócitos'
         expect(response_body[0]['tests'][1]['limits']).to eq '9-61'
         expect(response_body[0]['tests'][1]['result']).to eq '89'
-
-        DB.reset_tables
       end
   
       it 'retorna vazio quando o token não existe' do
@@ -110,8 +110,6 @@ describe 'API de exames' do
         expect(response_body[1]['result_token']).to eq 'TOKEN2'
         expect(response_body[1]['doctor']['crm']).to eq 'B0002IQM67'
         expect(response_body[1]['tests'].size).to eq 2
-
-        DB.reset_tables
       end
 
       it 'retorna vazio se nenhum exame possuir aquela sequência de caracteres no seu token' do
@@ -123,8 +121,6 @@ describe 'API de exames' do
         expect(last_response.content_type).to include 'application/json'
         response_body = JSON.parse(last_response.body)
         expect(response_body.size).to eq 0
-
-        DB.reset_tables
       end
     end
   end

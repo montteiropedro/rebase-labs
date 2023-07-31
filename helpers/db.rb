@@ -53,12 +53,12 @@ module DB
   def self.reset_tables
     db = create_db_connection
 
-    db.exec("DROP TABLE IF EXISTS exam_tests")
-    db.exec("DROP TABLE IF EXISTS exams")
-    db.exec("DROP TABLE IF EXISTS patients")
-    db.exec("DROP TABLE IF EXISTS doctors")
-
-    create_tables(db)
+    db.exec("DELETE FROM exam_tests;")
+    db.exec("DELETE FROM exams;")
+    db.exec("DELETE FROM patients;")
+    db.exec("DELETE FROM doctors;")
+  rescue
+    puts e
   end
 
   def self.insert_patients(db, data)
